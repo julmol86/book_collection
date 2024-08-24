@@ -10,7 +10,8 @@ CREATE TABLE book (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     author VARCHAR(100) NOT NULL,
-	description VARCHAR(4000) NOT NULL
+	description VARCHAR(4000) NOT NULL,
+    CONSTRAINT unique_name_author UNIQUE (name, author)
 );
 
 -- indexes for potentially frequently used queries 
