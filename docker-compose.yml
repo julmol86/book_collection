@@ -1,15 +1,19 @@
-version: "3.8"
+version: '3.8'
 
 services:
+
   books-db:
     image: postgres:16.4
     container_name: books-db-container
+    restart: always
     environment:
       POSTGRES_PASSWORD: admin_password
     ports:
       - "5433:5432"
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - books-net
 
   books-backend:
     build:
@@ -20,3 +24,12 @@ services:
       - "8081:8080"
     depends_on:
       - books-db
+    links:
+      - books-db
+    networks:
+      - books-net
+
+networks:
+  books-net:
+    name: books-network  
+    
