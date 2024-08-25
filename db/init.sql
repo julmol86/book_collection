@@ -10,8 +10,7 @@ CREATE TABLE book (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     author VARCHAR(100) NOT NULL,
-	description VARCHAR(4000) NOT NULL,
-    CONSTRAINT unique_name_author UNIQUE (name, author)
+	description VARCHAR(4000) NOT NULL
 );
 
 -- indexes for potentially frequently used queries 
@@ -25,3 +24,6 @@ INSERT INTO book (name, author, description) VALUES
 
 -- grant privileges to the user
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE book TO bookkeeper;
+
+-- grant privileges on the sequence
+GRANT USAGE, SELECT, UPDATE ON SEQUENCE book_id_seq TO bookkeeper;
