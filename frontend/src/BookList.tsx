@@ -1,3 +1,5 @@
+import "./BookList.css";
+
 interface Book {
   id: number;
   name: string;
@@ -17,7 +19,7 @@ const BookList: React.FC<BookListProps> = ({
   selectedBook,
 }) => {
   return (
-    <div>
+    <div className="book-list-container">
       <h3>List of Books</h3>
       <ul style={{ listStyleType: "none", padding: 0 }}>
         {books.map((book) => (

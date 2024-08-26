@@ -1,0 +1,17 @@
+.book-list-container {
+    max-height: 400px; 
+    overflow-y: auto; 
+    border: 1px solid #ccc; 
+    padding: 10px; 
+    border-radius: 5px; 
+  }
+  
+  .book-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .book-item:last-child {
+    border-bottom: none;
+  }
+  
