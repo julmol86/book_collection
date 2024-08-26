@@ -14,20 +14,18 @@ const App: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
 
-  useEffect(() => {
-    // Fetch books from the backend when the component mounts
-    const fetchBooks = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/book/list");
-        console.log("Books fetched:", response.data); // Check the data structure
-        setBooks(response.data); // Assuming response.data is an array of books
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching books:", error);
-      }
-    };
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/book/list");
+      console.log("Books fetched:", response.data); // Check the data structure
+      setBooks(response.data); // Assuming response.data is an array of books
+    } catch (error) {
+      console.error("Error fetching books:", error);
+    }
+  };
 
-    fetchBooks();
+  useEffect(() => {
+    fetchBooks(); // Fetch books when the component mounts
   }, []); // Empty dependency array means this effect runs once when the component mounts
 
   const bookListRef = useRef<HTMLDivElement>(null);
@@ -57,7 +55,7 @@ const App: React.FC = () => {
       {/* Left part: Book form */}
       <div style={{ flex: 1, marginRight: "20px" }}>
         <h2>Book Collection</h2>
-        <BookForm selectedBook={selectedBook} />
+        <BookForm selectedBook={selectedBook} fetchBooks={fetchBooks} />
       </div>
 
       {/* Right part: Book list */}

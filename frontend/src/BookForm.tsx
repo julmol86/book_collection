@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import "./BookForm.css";
 
 interface Book {
@@ -10,9 +11,10 @@ interface Book {
 
 interface BookFormProps {
   selectedBook: Book | null;
+  fetchBooks: () => void;
 }
 
-const BookForm: React.FC<BookFormProps> = ({ selectedBook }) => {
+const BookForm: React.FC<BookFormProps> = ({ selectedBook, fetchBooks }) => {
   const [bookName, setBookName] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
@@ -22,21 +24,41 @@ const BookForm: React.FC<BookFormProps> = ({ selectedBook }) => {
       setBookName(selectedBook.name);
       setAuthor(selectedBook.author);
       setDescription(selectedBook.description);
+    } else {
+      setBookName("");
+      setAuthor("");
+      setDescription("");
     }
   }, [selectedBook]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSaveNew = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO add handle form submission for sending data to the backend
-    console.log("Book Saved:", { bookName, author, description });
+    const newBook = {
+      name: bookName,
+      author,
+      description,
+    };
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/book/create",
+        newBook
+      );
+      console.log("Book Saved:", response.data);
 
-    setBookName("");
-    setAuthor("");
-    setDescription("");
+      // Refresh the book list
+      fetchBooks();
+
+      // Clear the form fields
+      setBookName("");
+      setAuthor("");
+      setDescription("");
+    } catch (error) {
+      console.error("Error saving book:", error);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="book-form">
+    <form onSubmit={handleSaveNew} className="book-form">
       <div className="form-group">
         <label htmlFor="bookName">Title</label>
         <input
