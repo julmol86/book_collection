@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -34,9 +35,19 @@ func BookList(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		HandlerError(w, fmt.Sprintf("BookList error: %s", err.Error()))
 		return
 	}
+	var bookDtos []dto.BookDto
+	for _, book := range books {
+		bookDto := dto.BookDto{
+			ID:          book.ID,
+			Name:        book.Name,
+			Author:      book.Author,
+			Description: book.Description,
+		}
+		bookDtos = append(bookDtos, bookDto)
+	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(books)
+	json.NewEncoder(w).Encode(bookDtos)
 }
 
 func CreateBook(w http.ResponseWriter, r *http.Request, db *sql.DB) {
@@ -123,8 +134,14 @@ func main() {
 		DeleteBook(w, r, db)
 	}).Methods("DELETE")
 
+	corsHandler := handlers.CORS(
+		handlers.AllowedOrigins([]string{"http://localhost:5173"}), // Replace with correct
+		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
+		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
+	)
+
 	fmt.Println("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", r); err != nil {
+	if err := http.ListenAndServe(":8080", corsHandler(r)); err != nil {
 		log.Fatalf("Could not start server: %s\n", err.Error())
 	}
 }

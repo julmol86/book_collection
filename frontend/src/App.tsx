@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import BookForm from "./BookForm";
 import BookList from "./BookList";
 
@@ -10,22 +11,25 @@ interface Book {
 }
 
 const App: React.FC = () => {
-  const [books, setBooks] = useState<Book[]>([
-    {
-      id: 1,
-      name: "Book One",
-      author: "Author One",
-      description: "Description for Book One",
-    },
-    {
-      id: 2,
-      name: "Book Two",
-      author: "Author Two",
-      description: "Description for Book Two",
-    },
-  ]);
-
+  const [books, setBooks] = useState<Book[]>([]);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+
+  useEffect(() => {
+    // Fetch books from the backend when the component mounts
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/book/list");
+        console.log("Books fetched:", response.data); // Check the data structure
+        setBooks(response.data); // Assuming response.data is an array of books
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching books:", error);
+      }
+    };
+
+    fetchBooks();
+  }, []); // Empty dependency array means this effect runs once when the component mounts
+
   const bookListRef = useRef<HTMLDivElement>(null);
 
   const handleSelectBook = (book: Book) => {

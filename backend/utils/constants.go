@@ -4,7 +4,7 @@ const (
 	dbUser                = "bookkeeper"
 	dbPassword            = "bookkeeper"
 	dbName                = "booksdb"
-	dbHost                = "books-db"
-	dbPort                = 5432
+	dbHost                = "localhost" //"books-db"
+	dbPort                = 5433
 	RequestLimitPerMinute = 50
 )
