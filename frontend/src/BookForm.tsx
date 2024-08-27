@@ -12,9 +12,14 @@ interface Book {
 interface BookFormProps {
   selectedBook: Book | null;
   fetchBooks: () => void;
+  onDelete: () => void;
 }
 
-const BookForm: React.FC<BookFormProps> = ({ selectedBook, fetchBooks }) => {
+const BookForm: React.FC<BookFormProps> = ({
+  selectedBook,
+  fetchBooks,
+  onDelete,
+}) => {
   const [bookName, setBookName] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
@@ -44,11 +49,7 @@ const BookForm: React.FC<BookFormProps> = ({ selectedBook, fetchBooks }) => {
         newBook
       );
       console.log("Book Saved:", response.data);
-
-      // Refresh the book list
       fetchBooks();
-
-      // Clear the form fields
       setBookName("");
       setAuthor("");
       setDescription("");
@@ -88,9 +89,19 @@ const BookForm: React.FC<BookFormProps> = ({ selectedBook, fetchBooks }) => {
           required
         />
       </div>
-      <button type="submit" className="submit-button">
-        Save New
-      </button>
+      <div className="button-container">
+        <button type="submit" className="submit-button">
+          Save New
+        </button>
+        <button
+          type="button"
+          className="submit-button"
+          onClick={onDelete}
+          disabled={!selectedBook}
+        >
+          Delete
+        </button>
+      </div>
     </form>
   );
 };

@@ -17,7 +17,7 @@ const App: React.FC = () => {
   const fetchBooks = async () => {
     try {
       const response = await axios.get("http://localhost:8080/book/list");
-      console.log("Books fetched:", response.data); // Check the data structure
+      console.log("Books fetched:", response.data);
       setBooks(response.data); // Assuming response.data is an array of books
     } catch (error) {
       console.error("Error fetching books:", error);
@@ -26,12 +26,30 @@ const App: React.FC = () => {
 
   useEffect(() => {
     fetchBooks(); // Fetch books when the component mounts
-  }, []); // Empty dependency array means this effect runs once when the component mounts
+  }, []);
 
   const bookListRef = useRef<HTMLDivElement>(null);
 
   const handleSelectBook = (book: Book) => {
+    console.log("handleSelectBook");
     setSelectedBook(book);
+  };
+
+  const handleDeleteBook = async () => {
+    console.log(selectedBook);
+    if (selectedBook && selectedBook.id) {
+      try {
+        console.log("Attempting to delete book with id:", selectedBook.id);
+        await axios.delete(
+          `http://localhost:8080/book/delete/${selectedBook.id}`
+        );
+        console.log(`Book with id ${selectedBook.id} deleted`);
+        //setSelectedBook(null);
+        fetchBooks();
+      } catch (error) {
+        console.error("Error deleting book:", error);
+      }
+    }
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -39,7 +57,8 @@ const App: React.FC = () => {
       bookListRef.current &&
       !bookListRef.current.contains(event.target as Node)
     ) {
-      setSelectedBook(null);
+      console.log("handleClickOutside");
+      //setSelectedBook(null);
     }
   };
 
@@ -55,7 +74,11 @@ const App: React.FC = () => {
       {/* Left part: Book form */}
       <div style={{ flex: 1, marginRight: "20px" }}>
         <h2>Book Collection</h2>
-        <BookForm selectedBook={selectedBook} fetchBooks={fetchBooks} />
+        <BookForm
+          selectedBook={selectedBook}
+          fetchBooks={fetchBooks}
+          onDelete={handleDeleteBook}
+        />
       </div>
 
       {/* Right part: Book list */}
