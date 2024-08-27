@@ -29,6 +29,7 @@ const App: React.FC = () => {
   }, []);
 
   const bookListRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
 
   const handleSelectBook = (book: Book) => {
     console.log("handleSelectBook");
@@ -44,7 +45,7 @@ const App: React.FC = () => {
           `http://localhost:8080/book/delete/${selectedBook.id}`
         );
         console.log(`Book with id ${selectedBook.id} deleted`);
-        //setSelectedBook(null);
+        setSelectedBook(null);
         fetchBooks();
       } catch (error) {
         console.error("Error deleting book:", error);
@@ -55,10 +56,12 @@ const App: React.FC = () => {
   const handleClickOutside = (event: MouseEvent) => {
     if (
       bookListRef.current &&
-      !bookListRef.current.contains(event.target as Node)
+      formRef.current &&
+      !bookListRef.current.contains(event.target as Node) &&
+      !formRef.current.contains(event.target as Node)
     ) {
       console.log("handleClickOutside");
-      //setSelectedBook(null);
+      setSelectedBook(null);
     }
   };
 
@@ -72,7 +75,7 @@ const App: React.FC = () => {
   return (
     <div style={{ display: "flex", padding: "20px" }}>
       {/* Left part: Book form */}
-      <div style={{ flex: 1, marginRight: "20px" }}>
+      <div style={{ flex: 1, marginRight: "20px" }} ref={formRef}>
         <h2>Book Collection</h2>
         <BookForm
           selectedBook={selectedBook}
