@@ -58,6 +58,28 @@ const BookForm: React.FC<BookFormProps> = ({
     }
   };
 
+  const handleUpdateBook = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedBook) {
+      const updatedBook = {
+        id: selectedBook.id,
+        name: bookName,
+        author,
+        description,
+      };
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/book/update",
+          updatedBook
+        );
+        console.log("Book Updated:", response.data);
+        fetchBooks();
+      } catch (error) {
+        console.error("Error updating book:", error);
+      }
+    }
+  };
+
   return (
     <form onSubmit={handleSaveNew} className="book-form">
       <div className="form-group">
@@ -92,6 +114,14 @@ const BookForm: React.FC<BookFormProps> = ({
       <div className="button-container">
         <button type="submit" className="submit-button">
           Save New
+        </button>
+        <button
+          type="button"
+          className="submit-button"
+          onClick={handleUpdateBook}
+          disabled={!selectedBook}
+        >
+          Save
         </button>
         <button
           type="button"
