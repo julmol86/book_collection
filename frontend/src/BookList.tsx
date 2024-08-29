@@ -19,7 +19,7 @@ const BookList: React.FC<BookListProps> = ({
   selectedBook,
 }) => {
   return (
-    <div className="book-list-container">
+    <div data-testid={"book-list"} className="book-list-container">
       <h3>List of Books</h3>
       <ul style={{ listStyleType: "none", padding: 0 }}>
         {books.map((book) => (

@@ -76,7 +76,7 @@ const BookForm: React.FC<BookFormProps> = ({
 
   return (
     <form onSubmit={handleSaveNew} className="book-form">
-      <div className="form-group">
+      <div data-testid={"title-field"} className="form-group">
         <label htmlFor="bookName">Title</label>
         <input
           id="bookName"
@@ -86,7 +86,7 @@ const BookForm: React.FC<BookFormProps> = ({
           required
         />
       </div>
-      <div className="form-group">
+      <div data-testid={"author-field"} className="form-group">
         <label htmlFor="author">Author</label>
         <input
           id="author"
@@ -96,7 +96,7 @@ const BookForm: React.FC<BookFormProps> = ({
           required
         />
       </div>
-      <div className="form-group">
+      <div data-testid={"description-field"} className="form-group">
         <label htmlFor="description">Description</label>
         <textarea
           id="description"
@@ -106,10 +106,15 @@ const BookForm: React.FC<BookFormProps> = ({
         />
       </div>
       <div className="button-container">
-        <button type="submit" className="submit-button">
+        <button
+          data-testid={"save-new-button"}
+          type="submit"
+          className="submit-button"
+        >
           Save New
         </button>
         <button
+          data-testid={"save-button"}
           type="button"
           className="submit-button"
           onClick={handleUpdateBook}
@@ -118,6 +123,7 @@ const BookForm: React.FC<BookFormProps> = ({
           Save
         </button>
         <button
+          data-testid={"delete-button"}
           type="button"
           className="submit-button"
           onClick={onDelete}
