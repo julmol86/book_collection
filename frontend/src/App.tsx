@@ -16,7 +16,7 @@ const App: React.FC = () => {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/book/list");
+      const response = await axios.get("/api/book/list");
       console.log("Books fetched:", response.data);
       setBooks(response.data); // Assuming response.data is an array of books
     } catch (error) {
@@ -41,9 +41,7 @@ const App: React.FC = () => {
     if (selectedBook && selectedBook.id) {
       try {
         console.log("Attempting to delete book with id:", selectedBook.id);
-        await axios.delete(
-          `http://localhost:8080/book/delete/${selectedBook.id}`
-        );
+        await axios.delete(`api/book/delete/${selectedBook.id}`);
         console.log(`Book with id ${selectedBook.id} deleted`);
         setSelectedBook(null);
         fetchBooks();

@@ -36,7 +36,7 @@ func main() {
 	}).Methods("DELETE")
 
 	corsHandler := handlers.CORS(
-		handlers.AllowedOrigins([]string{"http://localhost:5173"}), // Replace with correct
+		handlers.AllowedOrigins([]string{"*"}),
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)

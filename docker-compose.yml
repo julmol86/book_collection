@@ -1,7 +1,6 @@
-version: '3.8'
+version: "3.8"
 
 services:
-
   books-db:
     image: postgres:16.4
     container_name: books-db-container
@@ -21,7 +20,7 @@ services:
       dockerfile: Dockerfile
     container_name: books-backend
     ports:
-      - "8081:8080"
+      - "8080:8080"
     depends_on:
       - books-db
     links:
@@ -29,7 +28,20 @@ services:
     networks:
       - books-net
 
+  books-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: books-frontend
+    depends_on:
+      - books-backend
+    links:
+      - books-backend
+    ports:
+      - "5173:5173"
+    networks:
+      - books-net
+
 networks:
   books-net:
-    name: books-network  
-    
+    name: books-network

@@ -44,10 +44,7 @@ const BookForm: React.FC<BookFormProps> = ({
       description,
     };
     try {
-      const response = await axios.post(
-        "http://localhost:8080/book/create",
-        newBook
-      );
+      const response = await axios.post("api/book/create", newBook);
       console.log("Book Saved:", response.data);
       fetchBooks();
       setBookName("");
@@ -68,10 +65,7 @@ const BookForm: React.FC<BookFormProps> = ({
         description,
       };
       try {
-        const response = await axios.post(
-          "http://localhost:8080/book/update",
-          updatedBook
-        );
+        const response = await axios.post("api/book/update", updatedBook);
         console.log("Book Updated:", response.data);
         fetchBooks();
       } catch (error) {
