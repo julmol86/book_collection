@@ -41,6 +41,19 @@ services:
       - "5173:5173"
     networks:
       - books-net
+  cypress:
+    image: cypress/included:12.5.1
+    depends_on:
+      - books-frontend
+      - books-backend
+    environment:
+      - CYPRESS_BASE_URL=http://books-frontend:5173
+    working_dir: /e2e
+    volumes:
+      - ./frontend/cypress:/e2e
+    networks:
+      - books-net
+    entrypoint: ["cypress", "run"]
 
 networks:
   books-net:
